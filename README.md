@@ -1,4 +1,4 @@
-# ws_radseq
+# ws-radseq
 
 Population genomic analysis of white and common threespine sticklebacks from Nova Scotia, combining a labelled set of whole-genome sequenced (WGS) individuals with a broader random sample sequenced by RADseq. The analysis characterises population structure, identifies putative admixed individuals at sympatric sites, and provides genomic evidence discussed in the manuscript:
 
