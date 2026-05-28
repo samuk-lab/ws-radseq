@@ -1,0 +1,16 @@
+# Genomics / analysis artifacts
+*.gds linguist-generated
+*.geno linguist-generated
+*.raw linguist-generated
+*.ped linguist-generated
+*.bed linguist-generated
+*.bim linguist-generated
+*.fam linguist-generated
+*.snmfProject linguist-generated
+data/**/*.snmf/** linguist-generated
+*.vcf.gz linguist-generated
+*.tbi linguist-generated
+
+# Real source scripts
+*.R linguist-language=R
+*.sh linguist-language=Shell
