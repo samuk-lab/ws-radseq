@@ -9,7 +9,7 @@ Population genomic analysis of white and common threespine sticklebacks from Nov
 
 ## Overview
 
-Two forms — referred to here as **white** (`wht`) and **common** (`cmn`) — co-occur at sympatric sites on the Nova Scotia. The WGS data from Canal Lake (CL) and Cherry Burton Road (CB) (from Sumarli et al., full citation forthcoming) contains individuals with confirmed white/common identities, whereas the RAD-seq data are random samples of individuals of unknown identity at Canal Lake and Salmon River (two sites where whites/commons are sympatric).
+Two forms — referred to here as **white** (`wht`) and **common** (`cmn`) — co-occur at sympatric sites in Nova Scotia. The WGS data from Canal Lake (CL) and Cherry Burton Road (CB) (from Sumarli et al., full citation forthcoming) contain individuals with confirmed white/common identities, whereas the RAD-seq data are random samples of individuals of unknown identity at Canal Lake and Salmon River (two sites where whites/commons are sympatric). Allopatric common sites on Cape Breton (BC, MJ) are included in the prefiltered VCF but excluded from the mainland sNMF and the DAPC.
 
  A joint SNP dataset was built from the merged RAD+WGS call set and used for:
 
@@ -22,7 +22,7 @@ Two forms — referred to here as **white** (`wht`) and **common** (`cmn`) — c
 ## Repository structure
 
 ```
-ns_radseq/
+ws-radseq/
 ├── data/
 │   ├── vcf/
 │   │   ├── raw/                          # Original merged RAD+WGS joint VCF
@@ -33,17 +33,17 @@ ns_radseq/
 │   ├── admixture/
 │   │   ├── mainland_samples.txt            # Sample list for mainland subsetting
 │   │   ├── ns_rad_pruned.{bed,bim,fam,raw} # LD-pruned full dataset (DAPC input)
-│   │   ├── ns_rad_pruned_mainland.{bed,bim,fam,ped,geno}  # LD-pruned mainland dataset (sNMF input)
+│   │   ├── ns_rad_pruned_mainland.{bed,bim,fam,ped,geno}  # mainland dataset (sNMF input)
 │   │   └── ns_rad_pruned_mainland.snmfProject + .snmf/    # sNMF results (K=1-6, 100 reps)
 │   └── gds/                              # GDS format files for SNPRelate PCA
 ├── meta/
-│   ├── popmap.txt     # Sample metadata: sample_id, population, species
-│   ├── meta_df.txt    # Extended metadata
-│   └── sex_info.txt   # Sex assignment data
+│   ├── popmap.txt                # Sample metadata: sample_id, population, species
+│   ├── meta_df.txt               # Extended metadata
+│   └── sex_info.txt / .csv       # Sex assignment data
 ├── envs/
-│   └── admixture_env.yaml  # Conda environment (plink, bcftools, tabix)
-├── figures/           # All output figures (PDF/PNG)
-└── *.R / *.sh         # Analysis scripts (see below)
+│   └── admixture_env.yaml        # Conda environment (plink, bcftools, tabix)
+├── figures/                      # All output figures (PDF)
+└── *.R / *.sh                    # Analysis scripts (see below)
 ```
 
 ---
@@ -62,8 +62,8 @@ Scripts are numbered in approximate execution order. Shell scripts (`.sh`) requi
 | `06_filter_mainland.R` | As `04`, but restricted to mainland samples (Cape Breton allopatric commons dropped); used for the supplemental sNMF analysis |
 | `07_snmf_prep_mainland.sh` | As `05`, but for mainland-only VCF with relaxed MAF (≥ 0.03) and no LD pruning to maximise power |
 | `08_snmf_mainland.R` | sNMF ancestry estimation (K = 1–6, 100 replicates) on the mainland subset; produces supplemental bar plots and cross-entropy figure |
-| `09_dapc_rad_wgs.R` | DAPC on the full RAD+WGS dataset (4,678 SNPs, *n* = 224); cross-validates optimal PC retention, plots discriminant scores and posterior assignment probabilities faceted by population |
-| `10_extract_paper_values.R` | Utility script: extracts cross-entropy values, sNMF Q scores, and DAPC posteriors for the six hybrid candidates and formats them for in-text reporting |
+| `09_dapc_rad_wgs.R` | DAPC on the RAD+WGS intersection (allopatric BC/MJ excluded). Trained on the 40 WGS samples (20 CB/cmn + 20 CL/wht) with morphology labels; RAD samples assigned via `predict.dapc()` to avoid label circularity. SNPs restricted to ≤ 5% missingness in the RAD subset. Outputs scores, assignment, scatter, and combined figures |
+| `10_extract_paper_values.R` | Utility: extracts mainland sNMF cross-entropy (ΔCE for K=1 vs K=2), K=2 Q scores, and DAPC posterior P(white) for the six hybrid candidates (CL30, CL34, FCL113_S14_L002, sal_riv27, sal_riv41, sal_riv42) for in-text reporting |
 
 ---
 
